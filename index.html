@@ -41,6 +41,31 @@
             margin-top: 40px;
             padding-top: 20px;
         }
+
+        .two-columns {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .column-left {
+            flex: 0.55;
+        }
+        
+        .column-right {
+            flex: 0.45;
+            text-align: center;
+        }
+        
+        .highlight {
+            color: magenta;
+            font-style: italic;
+        }
+        
+        .math-block {
+            margin: 10px 0;
+        }
     </style>
 </head>
 
@@ -66,15 +91,109 @@
     </nav>
 
     <main>
-
         <section id="introduccion" class="section">
             <h2>1. Introducción</h2>
-            <p> 
-            Enfrentamos el problema de explicar una <strong>variable de respuesta</strong> \(Y\) en relación a un vector de <strong>variables explicativas</strong> \(\mathbf{X} = (X_1, \ldots, X_k)\). 
-            Historicamente, han existido diferentes acercamientos a la modelación de esta relación.
+            <p>
+                Enfrentamos el problema de explicar una <strong>variable de respuesta</strong> \(Y\) en relación a un vector de <strong>variables explicativas</strong> \(\mathbf{X} = (X_1, \ldots, X_k)\).
             </p>
-
+            
+            <p>Historicamente, han existido diferentes acercamientos a la modelación de esta relación.</p>
             <img src="Imagenes/Historia.png" alt="LM -> GLM+AM -> GAM" width="400">
+            <p>Estos se abrevian como LM, GL, AM y GAM, respectivamente.</p>
+
+            <h3>Ingredientes de un GAM</h3>
+            <ul>
+                <li>
+                    <strong>Componente aleatoria.</strong><br>
+                    <span class="math-block">
+                        \( Y_i \mid \mathbf{X}_i = \mathbf{x}_i \sim EF(\theta_i) \)
+                    </span>
+                </li>
+            
+                <li>
+                    <strong>Componente sistemática.</strong><br>
+                    Relacionamos la respuesta esperada 
+                    \( \mu_i := \mathbb{E}[Y_i \mid \mathbf{X}_i = \mathbf{x}_i] \)
+                    con un <strong>predictor aditivo</strong> \( \eta_i \),
+                    determinado por <strong>funciones suaves</strong> \( \alpha, f_1, \ldots, f_k \):
+                    
+                    <div class="math-block">
+                        \[
+                        \eta_i := \alpha + \sum_{j=1}^k f_j(x_{ij})
+                        \]
+                    </div>
+                </li>
+            
+                <li>
+                    <strong>Función liga.</strong><br>
+                    La relación ocurre mediante una función liga:
+                    
+                    <div class="math-block">
+                        \[
+                        g(\mu_i) = \eta_i
+                        \]
+                    </div>
+                </li>
+            </ul>
+
+            <h3>Comparación con otras soluciones</h3>
+            <div class="two-columns">
+                <div class="column-left">
+                    <p style="text-align:center;"><strong>vs. Transformaciones</strong></p>
+            
+                    <p>
+                        Una transformación de un GLM del estilo
+                    </p>
+            
+                    <div class="math-block">
+                        \[
+                        X \mapsto h(X), \quad Y \mapsto h(Y)
+                        \]
+                    </div>
+            
+                    <p>
+                        altera la <strong>estructura global</strong> de los datos, lo que causa problemas en relaciones no lineales más complejas.
+                    </p>
+            
+                    <p class="highlight">
+                        En cambio, la variabilidad de una función suave permite adaptarse en cada localidad.
+                    </p>
+                </div>
+            
+                <div class="column-right">
+                    <img src="Imagenes/comparacion.png" alt="Comparación transformaciones" width="100%">
+                </div>
+            </div>
+
+            <div class="two-columns">
+            <div class="column-left">
+                <p style="text-align:center;"><strong>vs. modelo no aditivo</strong></p>
+        
+                <p>
+                    Una suposición no aditiva del estilo
+                </p>
+        
+                <div class="math-block">
+                    \[
+                    g(\mu_i) = f(X_{i1}, \ldots, X_{ik})
+                    \]
+                </div>
+        
+                <p>
+                    se vuelve difícil de trabajar por la <strong>maldición de la dimensión</strong>,
+                    ya que la distancia entre puntos crece con \(k\), requiriendo mucha más información.
+                </p>
+        
+                <p class="highlight">
+                    En cambio, la aditividad permite estudiar cada \( f_j \) por separado.
+                </p>
+            </div>
+        
+            <div class="column-right">
+                <img src="Imagenes/comparacion.png" alt="Comparación dimensión" width="100%">
+            </div>
+        </div>
+            
         </section>
 
         <section id="construccion" class="section">
