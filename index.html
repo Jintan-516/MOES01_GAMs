@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,23 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modelos Aditivos Generalizados - Proyecto</title>
     
-    <!-- MathJax for LaTeX support -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
     <style>
         :root {
-            --primary: #004d40;
-            --secondary: #00796b;
-            --accent: #d32f2f;
-            --bg: #fdfdfd;
-            --text: #2c3e50;
-            --code-bg: #272822;
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --bg: #f9f9f9;
+            --text: #333;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.7;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
             color: var(--text);
             background-color: var(--bg);
             margin: 0;
@@ -30,278 +36,226 @@
         }
 
         header {
-            background-color: var(--primary);
+            background: var(--primary);
             color: white;
-            padding: 4rem 1rem;
+            padding: 3rem 1rem;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            font-weight: 300;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
         }
 
         .container {
-            max-width: 850px;
+            max-width: 900px;
             margin: 2rem auto;
-            padding: 2rem;
             background: white;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            padding: 3rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             border-radius: 8px;
         }
 
-        nav {
-            position: sticky;
-            top: 0;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 10px 0;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
-        }
+        h1, h2, h3 { color: var(--primary); }
+        h2 { border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-top: 2rem; }
 
-        nav a {
-            text-decoration: none;
-            color: var(--secondary);
-            margin: 0 15px;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-        }
-
-        h2 {
-            color: var(--primary);
-            border-left: 5px solid var(--secondary);
-            padding-left: 15px;
-            margin-top: 3rem;
-        }
-
-        h3 {
-            color: var(--secondary);
-            margin-top: 2rem;
-        }
-
-        .math-box {
-            background: #f4f6f8;
+        .frame {
+            margin-bottom: 3rem;
             padding: 1.5rem;
-            border-radius: 6px;
-            margin: 1.5rem 0;
-            overflow-x: auto;
-            text-align: center;
-            font-size: 1.1rem;
+            border-left: 4px solid var(--accent);
+            background: #fff;
         }
 
-        .columns {
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
+        .frame-title {
+            font-weight: bold;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        /* Recreación del Diagrama TikZ en CSS */
+        .tikz-diagram {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            text-align: center;
             margin: 2rem 0;
         }
 
-        .column {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
+        .node {
+            border: 2px solid #000;
+            padding: 10px;
             border-radius: 5px;
-            display: block;
-            margin: 10px auto;
-            border: 1px solid #ddd;
+            font-size: 0.9rem;
         }
 
-        .highlight {
-            color: var(--accent);
-            font-weight: bold;
-        }
+        .lm { background: #d1e9ff; }
+        .glm { background: #ffd1f3; }
+        .am { background: #d1ffd1; }
+        .gam { background: #fffdd1; border: 3px solid #f1c40f; }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-        }
+        .columns { display: flex; gap: 2rem; align-items: center; }
+        .column { flex: 1; }
 
-        th, td {
-            border: 1px solid #dfe6e9;
-            padding: 12px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f8f9fa;
-        }
+        img { max-width: 100%; height: auto; border-radius: 4px; }
 
         pre {
-            background: var(--code-bg);
+            background: #272822;
             color: #f8f8f2;
             padding: 1rem;
-            border-radius: 6px;
-            font-family: 'Courier New', Courier, monospace;
+            border-radius: 5px;
             overflow-x: auto;
         }
 
-        footer {
-            text-align: center;
-            padding: 3rem;
-            background: #eee;
-            margin-top: 4rem;
-            color: #666;
-        }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        th { background: #f4f4f4; }
 
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background: var(--secondary);
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: 1rem;
-        }
-
-        @media (max-width: 600px) {
-            header h1 { font-size: 1.8rem; }
-            .container { padding: 1rem; margin: 1rem; }
-        }
+        .reference-list { font-size: 0.9rem; color: #666; }
     </style>
 </head>
 <body>
 
 <header>
     <h1>Introducción a los Modelos Aditivos Generalizados</h1>
-    <p>Presentación de proyecto | Modelos Estadísticos I</p>
-    <p><strong>06 de mayo, 2026</strong></p>
+    <p>Presentación de proyecto</p>
+    <p>06 de mayo, 2026</p>
 </header>
-
-<nav>
-    <a href="#intro">Introducción</a>
-    <a href="#experimento">Experimento</a>
-    <a href="#construccion">Construcción</a>
-    <a href="#ejemplo">Ejemplo R</a>
-</nav>
 
 <div class="container">
 
-    <section id="intro">
-        <h2>Introducción</h2>
-        <p>Enfrentamos el problema de explicar una <strong>variable de respuesta</strong> \(Y\) en relación a un vector de <strong>variables explicativas</strong> \(\mathbf{X} = (X_1, \ldots, X_k)\).</p>
+    <h2>1. Introducción</h2>
+
+    <div class="frame">
+        <div class="frame-title">Historia</div>
+        <p>Enfrentamos el problema de explicar una <strong>variable de respuesta</strong> $Y$ en relación a un vector de <strong>variables explicativas</strong> $\mathbf{X} = (X_1, \ldots, X_k)$.</p>
         
-        <h3>Evolución de los Modelos</h3>
-        <p>A lo largo de la historia, la modelación estadística ha evolucionado para capturar relaciones más complejas:</p>
+        <div class="tikz-diagram">
+            <div></div>
+            <div class="node lm"><strong>M. Lineal</strong><br><em>1908</em><br>$Y|\mathbf{X} \sim N$<br>$\mu = \sum \beta_j X_j$</div>
+            <div></div>
+
+            <div style="font-size: 2rem;">&searr;</div>
+            <div></div>
+            <div style="font-size: 2rem;">&swarr;</div>
+
+            <div class="node glm"><strong>M.L. Generalizado</strong><br><em>1972</em><br>$Y|\mathbf{X} \sim EF$<br>$g(\mu) = \sum \beta_j X_j$</div>
+            <div class="node gam"><strong>M.A. Generalizado</strong><br><em>1986, 1990</em><br>$Y|\mathbf{X} \sim EF$<br>$g(\mu) = \sum f_j(X_j)$</div>
+            <div class="node am"><strong>M. Aditivo</strong><br><em>1981</em><br>$Y|\mathbf{X} \sim N$<br>$\mu = \sum f_j(X_j)$</div>
+        </div>
+        <p><em>Se abrevian como LM, GLM, AM y GAM, respectivamente.</em></p>
+    </div>
+
+    <div class="frame">
+        <div class="frame-title">Ingredientes de un GAM</div>
         <ul>
-            <li><strong>M. Lineal (1908):</strong> \(Y|\mathbf{X} \sim N, \mu = \sum eta_jX_j\)</li>
-            <li><strong>M.L. Generalizado (1972):</strong> \(Y|\mathbf{X} \sim EF, g(\mu) = \sum eta_jX_j\)</li>
-            <li><strong>M. Aditivo (1981):</strong> \(Y|\mathbf{X} \sim N, \mu = \sum f_j(X_j)\)</li>
-            <li><strong>M.A. Generalizado (1986/90):</strong> \(Y|\mathbf{X} \sim EF, g(\mu) = \sum f_j(X_j)\)</li>
-        </ul>
-
-        <h3>Ingredientes de un GAM</h3>
-        <p>Un GAM se compone de tres elementos fundamentales:</p>
-        <ol>
-            <li><strong>Componente aleatoria:</strong> \(Y_i|\mathbf{X}_i=\mathbf{x}_i \sim EF(	heta_i)\).</li>
-            <li><strong>Componente sistemática:</strong> Relación de la media \(\mu_i\) con un predictor aditivo \(\eta_i\) mediante funciones suaves:
-                <div class="math-box">\[ \eta_i = lpha + \sum_{j=1}^k f_j(x_{ij}) \]</div>
+            <li><strong>Componente aleatoria:</strong> $Y_i|\mathbf{X}_i=\mathbf{x}_i \sim EF(\theta_i)$.</li>
+            <li><strong>Componente sistemática:</strong> Relacionamos la respuesta esperada $\mu_i := \mathbf{E}[Y_i|\mathbf{X}_i=\mathbf{x}_i]$ con un <strong>predictor aditivo</strong> $\eta_i$ determinado por <strong>funciones suaves</strong> $\alpha,f_1,\ldots,f_k$:
+                $$\eta_i := \alpha+\sum_{j=1}^k f_j(x_{ij})$$
             </li>
-            <li><strong>Función liga:</strong> La relación ocurre mediante \(g(\mu_i) = \eta_i\).</li>
-        </ol>
-    </section>
+            <li><strong>Función liga:</strong> La relación ocurre mediante una <strong>función liga</strong> $g(\mu_i) = \eta_i$.</li>
+        </ul>
+    </div>
 
-    <section id="comparacion">
-        <h3>Comparación con otras soluciones</h3>
+    <div class="frame">
+        <div class="frame-title">Comparación vs. Transformaciones</div>
         <div class="columns">
             <div class="column">
-                <h4>vs. Transformaciones</h4>
-                <p>Las transformaciones globales alteran toda la estructura de los datos. <span class="highlight">Un GAM usa funciones suaves que se adaptan localmente.</span></p>
+                <p>Una transformación de un GLM del estilo $X \mapsto h(X)$ altera la <strong>estructura global</strong> de los datos, causando problemas en relaciones no lineales complejas.</p>
+                <p style="color: #e91e63;">En cambio, la variabilidad de una función suave permite adaptarse localmente.</p>
             </div>
             <div class="column">
-                <p style="text-align:center; font-style: italic;">[Espacio para imagen: comparacion.png]</p>
-                <img src="comparacion.png" alt="Comparativa de ajuste local">
+                <img src="comparacion.png" alt="Comparación">
             </div>
         </div>
+    </div>
+
+    <div class="frame">
+        <div class="frame-title">Comparación vs. No Aditividad</div>
         <div class="columns">
             <div class="column">
-                <h4>vs. Modelos No Aditivos</h4>
-                <p>Evitamos la "maldición de la dimensión" (\(k\) grande) al asumir aditividad, permitiendo estudiar cada \(f_j\) por separado.</p>
+                <p>Una suposición <strong>no aditiva</strong> $g(\mu_i) = f(X_{i1},\ldots,X_{ik})$ sufre la <strong>maldición de la dimensión</strong>: la distancia entre puntos explota conforme $k$ crece.</p>
+                <p style="color: #e91e63;">La aditividad nos permite estudiar cada $f_j$ por separado.</p>
+            </div>
+            <div class="column">
+                <img src="comparacion.png" alt="Maldición Dimensión">
             </div>
         </div>
-    </section>
+    </div>
 
-    <section id="experimento">
-        <h2>Experimento de Aceleración</h2>
-        <p>Supongamos datos de un experimento que mide la aceleración respecto al tiempo:</p>
+    <div class="frame">
+        <div class="frame-title">Datos del experimento</div>
+        <p>Experimento de aceleración vs tiempo:</p>
+        <p>$$\text{times} = [0.0000, 0.6061, \dots, 11.5152]$$
+        $$\text{accel} = [-0.2802, -0.0990, \dots, 1.1108]$$</p>
+        <img src="Datos_times_accel.png" style="width: 70%; display: block; margin: auto;">
+    </div>
+
+    <div class="frame">
+        <div class="frame-title">Ajustes</div>
+        <div class="columns">
+            <div class="column">
+                <strong>Ajuste Lineal:</strong><br>
+                <img src="Ajuste_Lineal.png">
+            </div>
+            <div class="column">
+                <strong>Ajuste GAM:</strong><br>
+                <img src="Ajuste_GAM.png">
+            </div>
+        </div>
+    </div>
+
+    <h2>2. Construcción del modelo</h2>
+
+    <div class="frame">
+        <p>Para los GAM estimamos los parámetros maximizando la función de verosimilitud bajo la suposición $Y_i|\mathbf{X}_i=\mathbf{x}_i \sim EF(\theta_i)$.</p>
+        <p>Log-verosimilitud: 
+        $$l(\theta) = \sum_{i=1}^n \log f_{\theta_i}(y_i)$$
+        A través de los mapeos inversos de $g$ y $b'$, a cada $\mathbf{f}$ le asociamos un $\theta$.</p>
+    </div>
+
+    <div class="frame">
+        <div class="frame-title">Log-verosimilitud penalizada</div>
+        <p>Definimos la penalización por curvatura de $f \in C^2$:</p>
+        $$\frac{1}{2}\lambda\int_{I} [f''(x)]^2\,dx$$
+        <p>La <strong>log-verosimilitud penalizada</strong> es:</p>
+        $$l_P(\mathbf{f}) := l(\mathbf{f})-\frac{1}{2}\sum_{i=1}^k \lambda_j\int_{I_k}[f_j''(x)]^2\,dx$$
+        <p>Buscamos estimadores que maximicen $l_p$.</p>
+    </div>
+
+    <div class="frame">
+        <div class="frame-title">Elección de una base</div>
+        <p>Restringimos el espacio a combinaciones lineales de bases:</p>
+        <ul>
+            <li><strong>Polinomios:</strong> $f_j(x) = \sum b_{mj}x^m$.</li>
+            <li><strong>Funciones Carpa:</strong> Lineales a partes sobre las observaciones.</li>
+            <li><strong>Splines Cúbicos:</strong> El estándar computacional para suavidad.</li>
+        </ul>
+        <img src="Imagenes/Bases/CSpline Basis.pdf" alt="Splines">
+    </div>
+
+    <h2>3. Ejemplo de GAM</h2>
+
+    <div class="frame">
+        <div class="frame-title">Impacto de la temperatura en Viscosidad</div>
         <table>
-            <tr>
-                <th>Tiempo (s)</th>
-                <td>0.00</td><td>0.61</td><td>1.21</td><td>1.82</td><td>2.42</td><td>...</td>
-            </tr>
-            <tr>
-                <th>Aceleración</th>
-                <td>-0.28</td><td>-0.10</td><td>0.82</td><td>0.10</td><td>0.17</td><td>...</td>
-            </tr>
+            <tr><th>Temperatura</th><td>24.9</td><td>35.0</td><td>44.9</td><td>55.1</td><td>65.2</td><td>75.2</td><td>85.2</td><td>95.2</td></tr>
+            <tr><th>Viscosidad</th><td>1.133</td><td>0.977</td><td>0.853</td><td>0.755</td><td>0.672</td><td>0.602</td><td>0.542</td><td>0.507</td></tr>
         </table>
+    </div>
 
-        <div class="columns">
-            <div class="column">
-                <h4>Ajuste Lineal (Convencional)</h4>
-                <img src="Ajuste_Lineal.png" alt="Gráfico de Ajuste Lineal">
-            </div>
-            <div class="column">
-                <h4>Ajuste GAM (Flexible)</h4>
-                <img src="Ajuste_GAM.png" alt="Gráfico de Ajuste GAM">
-            </div>
-        </div>
-    </section>
+    <div class="frame">
+        <div class="frame-title">Implementación en R (mgcv)</div>
+        <pre><code>modelogam = gam(Y ~ s(X, k = 5), method = "REML")</code></pre>
+        <img src="Imagenes/Wiggly/VT_GAM.pdf" style="width: 80%; margin-top: 1rem;">
+    </div>
 
-    <section id="construccion">
-        <h2>Construcción del Modelo</h2>
-        <p>Buscamos estimar \(\mathbf{f}\) maximizando la <strong>Log-verosimilitud penalizada</strong>:</p>
-        <div class="math-box">
-            \[ l_P(\mathbf{f}) = l(\mathbf{f}) - rac{1}{2} \sum_{j=1}^k \lambda_j \int [f_j''(x)]^2 dx \]
-        </div>
-        <p>Donde \(\lambda_j\) controla el compromiso entre ajuste y suavidad (curvatura).</p>
-        
-        <h3>Bases y Splines Cúbicos</h3>
-        <p>Para la implementación computacional se utilizan bases de funciones como los <strong>Splines Cúbicos</strong>, que permiten representar funciones suaves complejas como combinaciones lineales de bases locales.</p>
-    </section>
+    <h1 style="text-align: center; margin-top: 5rem;">Gracias</h1>
 
-    <section id="ejemplo">
-        <h2>Ejemplo Práctico en R</h2>
-        <p>Utilizando el paquete <code>mgcv</code>, el ajuste es directo:</p>
-        <pre><code># Código en R
-library(mgcv)
-
-# Ajuste con suavizado automático (REML)
-modelo_gam <- gam(Viscosidad ~ s(Temperatura, k = 5), 
-                   data = datos, 
-                   method = "REML")
-
-summary(modelo_gam)
-plot(modelo_gam, pages = 1, shades = TRUE)</code></pre>
-        <p>Este enfoque supera a los modelos lineales transformados en problemas de viscosidad vs temperatura.</p>
-    </section>
-
-    <section style="text-align:center; padding: 4rem 0;">
-        <h2 style="border:none; font-size: 2.5rem;">¡Gracias!</h2>
-        <p>¿Tienes dudas? Consulta las referencias.</p>
-        <a href="https://github.com" class="btn">Ver Código en GitHub</a>
-    </section>
+    <div class="reference-list">
+        <h3>Referencias</h3>
+        <ul>
+            <li>Wood, Simon N. (2017). Generalized Additive Models. Chapman and Hall/CRC.</li>
+            <li>Montgomery. Control de Calidad y Regresión.</li>
+        </ul>
+    </div>
 
 </div>
-
-<footer>
-    <p>&copy; 2026 - Proyecto de Modelos Estadísticos I</p>
-    <p>Basado en <em>Generalized Additive Models</em> de Simon N. Wood.</p>
-</footer>
 
 </body>
 </html>
