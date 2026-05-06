@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelos Aditivos Generalizados - Proyecto</title>
+    <title> Introducción a los Modelos Aditivos Generalizados </title>
     
     <script>
         window.MathJax = {
@@ -51,7 +51,7 @@
             border-radius: 8px;
         }
 
-        h1, h2, h3 { color: var(--primary); }
+        h1, h2, h3 { color: var(--secondary); }
         h2 { border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-top: 2rem; }
 
         .frame {
@@ -113,7 +113,7 @@
 
 <header>
     <h1>Introducción a los Modelos Aditivos Generalizados</h1>
-    <p>Presentación de proyecto</p>
+    <p>Modelos Estadísticos 01</p>
     <p>06 de mayo, 2026</p>
 </header>
 
@@ -126,17 +126,7 @@
         <p>Enfrentamos el problema de explicar una <strong>variable de respuesta</strong> $Y$ en relación a un vector de <strong>variables explicativas</strong> $\mathbf{X} = (X_1, \ldots, X_k)$.</p>
         
         <div class="tikz-diagram">
-            <div></div>
-            <div class="node lm"><strong>M. Lineal</strong><br><em>1908</em><br>$Y|\mathbf{X} \sim N$<br>$\mu = \sum \beta_j X_j$</div>
-            <div></div>
-
-            <div style="font-size: 2rem;">&searr;</div>
-            <div></div>
-            <div style="font-size: 2rem;">&swarr;</div>
-
-            <div class="node glm"><strong>M.L. Generalizado</strong><br><em>1972</em><br>$Y|\mathbf{X} \sim EF$<br>$g(\mu) = \sum \beta_j X_j$</div>
-            <div class="node gam"><strong>M.A. Generalizado</strong><br><em>1986, 1990</em><br>$Y|\mathbf{X} \sim EF$<br>$g(\mu) = \sum f_j(X_j)$</div>
-            <div class="node am"><strong>M. Aditivo</strong><br><em>1981</em><br>$Y|\mathbf{X} \sim N$<br>$\mu = \sum f_j(X_j)$</div>
+            <img src="historia.png" alt="Comparación">
         </div>
         <p><em>Se abrevian como LM, GLM, AM y GAM, respectivamente.</em></p>
     </div>
@@ -244,8 +234,6 @@
         <pre><code>modelogam = gam(Y ~ s(X, k = 5), method = "REML")</code></pre>
         <img src="Imagenes/Wiggly/VT_GAM.pdf" style="width: 80%; margin-top: 1rem;">
     </div>
-
-    <h1 style="text-align: center; margin-top: 5rem;">Gracias</h1>
 
     <div class="reference-list">
         <h3>Referencias</h3>
