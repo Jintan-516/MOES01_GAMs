@@ -66,6 +66,37 @@
         .math-block {
             margin: 10px 0;
         }
+
+        .definition {
+            background: #f9f9ff;
+            border-left: 4px solid #4a69bd;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+        
+        .observation {
+            color: #c0392b;
+            margin-top: 15px;
+        }
+        
+        .figure {
+            text-align: center;
+            margin: 25px 0;
+        }
+        
+        .figure img {
+            max-width: 90%;
+        }
+        
+        .caption {
+            font-size: 0.9em;
+            color: #555;
+        }
+        
+        .subsection {
+            margin-top: 40px;
+        }
     </style>
 </head>
 
@@ -98,7 +129,7 @@
             </p>
             
             <p>Historicamente, han existido diferentes acercamientos a la modelación de esta relación.</p>
-            <img src="Imagenes/Historia.png" alt="LM -> GLM+AM -> GAM" width="400">
+            <img src="Imagenes/Historia.png" alt="LM -> GLM+AM -> GAM" width="50%">
             <p>Estos se abrevian como LM, GL, AM y GAM, respectivamente.</p>
 
             <h3>Ingredientes de un GAM</h3>
@@ -166,41 +197,152 @@
             </div>
 
             <div class="two-columns">
-            <div class="column-left">
-                <p style="text-align:center;"><strong>vs. modelo no aditivo</strong></p>
-        
-                <p>
-                    Una suposición no aditiva del estilo
-                </p>
-        
-                <div class="math-block">
-                    \[
-                    g(\mu_i) = f(X_{i1}, \ldots, X_{ik})
-                    \]
+                <div class="column-right">
+                    <img src="Imagenes/comparacion.png" alt="Comparación dimensión" width="100%">
                 </div>
-        
-                <p>
-                    se vuelve difícil de trabajar por la <strong>maldición de la dimensión</strong>,
-                    ya que la distancia entre puntos crece con \(k\), requiriendo mucha más información.
-                </p>
-        
-                <p class="highlight">
-                    En cambio, la aditividad permite estudiar cada \( f_j \) por separado.
-                </p>
-            </div>
-        
-            <div class="column-right">
-                <img src="Imagenes/comparacion.png" alt="Comparación dimensión" width="100%">
-            </div>
+                <div class="column-left">
+                    <p style="text-align:center;"><strong>vs. modelo no aditivo</strong></p>
+            
+                    <p>
+                        Una suposición no aditiva del estilo
+                    </p>
+            
+                    <div class="math-block">
+                        \[
+                        g(\mu_i) = f(X_{i1}, \ldots, X_{ik})
+                        \]
+                    </div>
+            
+                    <p>
+                        se vuelve difícil de trabajar por la <strong>maldición de la dimensión</strong>,
+                        ya que la distancia entre puntos crece con \(k\), requiriendo mucha más información.
+                    </p>
+            
+                    <p class="highlight">
+                        En cambio, la aditividad permite estudiar cada \( f_j \) por separado.
+                    </p>
+                </div>
         </div>
             
         </section>
 
         <section id="construccion" class="section">
-            <h2>2. Construcción del modelo</h2>
+        <h2>2. Construcción del modelo</h2>
             <p>
-                Describe aquí la construcción del modelo aditivo generalizado.
+                Supongamos una muestra aleatoria de \( n \) observaciones del modelo:
             </p>
+            
+            <div class="math-block">
+                \[
+                (Y_1, \mathbf{x}_1), \ldots, (Y_n, \mathbf{x}_n)
+                \]
+            </div>
+            
+            <p>
+                Queremos <span class="highlight">estimar</span> \( \alpha, f_1, \ldots, f_k \), o equivalentemente la función
+            </p>
+            
+            <div class="math-block">
+                \[
+                f:\ \mathbf{x}_i \mapsto \alpha + f_1(x_{i1}) + \cdots + f_k(x_{ik})
+                \]
+            </div>
+            
+            <p>
+                de modo que se <span class="highlight">ajusten bien a estas observaciones</span>.
+            </p>
+            
+            <br>
+            
+            <p>
+                Esto nos lleva a desarrollar:
+            </p>
+            
+            <ol>
+                <li>
+                    Metodología para <strong>construir</strong> la función \( f \)
+                    (equivalentemente, \( \alpha, f_1, \ldots, f_k \)).
+                </li>
+                <li>
+                    Metodología para <strong>comparar/validar</strong> modelos.
+                </li>
+            </ol>
+
+            <div class="subsection">
+                <h3>Estimación por máxima verosimilitud</h3>
+                
+                <p>
+                Recordemos que en un GLM es estándar construir el modelo mediante la 
+                <strong>teoría de máxima verosimilitud (EMV)</strong>. Es decir, estimamos 
+                \( \hat\beta_0, \hat\beta_1, \ldots, \hat\beta_k \) maximizando la verosimilitud.
+                </p>
+                
+                <p>
+                Para los GAM seguiremos la misma idea.
+                </p>
+            </div>
+
+            <div class="subsection">
+                <p>Bajo la suposición</p>
+                
+                <div class="math-block">
+                \[
+                Y_i \mid \mathbf{X}_i = \mathbf{x}_i \sim EF(\theta_i)
+                \]
+                </div>
+                
+                <p>tenemos que</p>
+                
+                <div class="math-block">
+                \[
+                f_{\theta_i}(y_i) = \exp\left(
+                \frac{y_i\theta_i - b(\theta_i)}{a(\phi)} + c(y_i,\phi)
+                \right)
+                \]
+                </div>
+                
+                <p>y por lo tanto una <strong>log-verosimilitud</strong>:</p>
+                
+                <div class="math-block">
+                \[
+                l(\theta) = \sum_{i=1}^n \log f_{\theta_i}(y_i)
+                \]
+                </div>
+            </div>
+
+            <div class="subsection">
+                <p>Recordemos el mapeo:</p>
+                
+                <div class="math-block">
+                \[
+                \theta_i \xrightarrow{b'} \mu_i 
+                \xrightarrow{g} \eta_i = f(\mathbf{x}_i)
+                \]
+                </div>
+                
+                <p>Asumiendo invertibilidad, obtenemos:</p>
+                
+                <div class="math-block">
+                \[
+                f \mapsto 
+                \begin{pmatrix}
+                f(\mathbf{x}_1)\\
+                \vdots\\
+                f(\mathbf{x}_n)
+                \end{pmatrix}
+                \xrightarrow{g^{-1}}
+                \begin{pmatrix}
+                \mu_1\\
+                \vdots\\
+                \mu_n
+                \end{pmatrix}
+                \xrightarrow{(b')^{-1}}
+                \theta
+                \]
+                </div>
+                
+                <p>Así, a cada función \( f \) le asociamos un \( \theta \).</p>
+            </div>
         </section>
 
         <section id="ejemplo" class="section">
